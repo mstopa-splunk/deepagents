@@ -275,3 +275,55 @@ Usage:
 - Results are returned using cat -n format, with line numbers starting at 1
 - You have the capability to call multiple tools in a single response. It is always better to speculatively read multiple files as a batch that are potentially useful. 
 - If you read a file that exists but has empty contents you will receive a system reminder warning in place of file contents."""
+
+WRITE_STRUCTURED_RESPONSE_DESCRIPTION = """Use this tool to create and manage a structured response for Splunk sourcetype research findings. This helps organize sourcetype classifications in a consistent format and provides clear deliverables to the user.
+
+## When to Use This Tool
+
+Use this tool proactively in these scenarios:
+
+1. **Final research deliverable** - When you need to provide a structured summary of sourcetype research findings
+2. **Splunk sourcetype research** - This should be the FINAL TODO item for any Splunk sourcetype research
+3. **Sourcetype classification** - When research results need to be organized by requirement level (required vs optional)
+4. **User explicitly requests structured output** - When the user asks for organized, categorized sourcetype results
+5. **After completing research tasks** - Mark this as the final step to format your sourcetype findings
+
+## When NOT to Use This Tool
+
+Skip using this tool when:
+1. The research is incomplete or ongoing
+2. The user only needs a simple answer without structured formatting
+3. The task doesn't involve Splunk sourcetype research
+4. The research is purely informational without deliverable requirements
+
+## Parameters
+
+- sourcetypes: A list of SourceType objects, where each contains:
+  - name: The sourcetype name (e.g., "aws:cloudtrail", "aws:config", etc.)
+  - category: Either "required" or "optional" 
+  - classification_reason: A clear description of why this sourcetype is classified as required or optional for the use case
+
+## Example Usage
+
+When researching AWS risk auditing sourcetypes:
+```
+write_structured_response(sourcetypes=[
+    {
+        "name": "aws:cloudtrail", 
+        "category": "required",
+        "classification_reason": "Provides comprehensive API call logging essential for security monitoring and compliance auditing"
+    },
+    {
+        "name": "aws:config",
+        "category": "required", 
+        "classification_reason": "Tracks configuration changes and compliance status of AWS resources, critical for risk assessment"
+    },
+    {
+        "name": "aws:guardduty",
+        "category": "optional", 
+        "classification_reason": "Provides additional threat detection insights that enhance but are not essential for basic risk auditing"
+    }
+])
+```
+
+This tool will store the sourcetype classifications in the agent state and provide confirmation of the formatted results."""

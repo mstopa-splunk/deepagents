@@ -8,8 +8,9 @@ from deepagents.prompts import (
     WRITE_TODOS_DESCRIPTION,
     EDIT_DESCRIPTION,
     TOOL_DESCRIPTION,
+    WRITE_STRUCTURED_RESPONSE_DESCRIPTION,
 )
-from deepagents.state import Todo, DeepAgentState
+from deepagents.state import Todo, DeepAgentState, SourceType
 
 
 @tool(description=WRITE_TODOS_DESCRIPTION)
@@ -21,6 +22,20 @@ def write_todos(
             "todos": todos,
             "messages": [
                 ToolMessage(f"Updated todo list to {todos}", tool_call_id=tool_call_id)
+            ],
+        }
+    )
+
+
+@tool(description=WRITE_STRUCTURED_RESPONSE_DESCRIPTION)
+def write_structured_response(
+    sourcetypes: list[SourceType], tool_call_id: Annotated[str, InjectedToolCallId]
+) -> Command:
+    return Command(
+        update={
+            "sourcetypes": sourcetypes,
+            "messages": [
+                ToolMessage(f"Created structured response with {len(sourcetypes)} sourcetypes", tool_call_id=tool_call_id)
             ],
         }
     )
@@ -145,3 +160,5 @@ def edit_file(
             "messages": [ToolMessage(result_msg, tool_call_id=tool_call_id)],
         }
     )
+
+

@@ -11,6 +11,14 @@ class Todo(TypedDict):
     status: Literal["pending", "in_progress", "completed"]
 
 
+class SourceType(TypedDict):
+    """Classified sourcetype"""
+    
+    name: str
+    category: Literal["required", "optional"]
+    classification_reason: str
+
+
 def file_reducer(l, r):
     if l is None:
         return r
@@ -23,3 +31,4 @@ def file_reducer(l, r):
 class DeepAgentState(AgentState):
     todos: NotRequired[list[Todo]]
     files: Annotated[NotRequired[dict[str, str]], file_reducer]
+    sourcetypes: NotRequired[list[SourceType]]
